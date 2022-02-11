@@ -1,18 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>CSD120 - Eric</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>CSD223 Popper Tutorial</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Eric Dawson">
     <meta name="description" content="A basic website designed by a student for a project">
+    <style>
+        #tooltip {
+        background: #333;
+        color: white;
+        font-weight: bold;
+        padding: 4px 8px;
+        font-size: 13px;
+        border-radius: 4px;
+        }
+        #hovertip {
+        background: green;
+        color: white;
+        font-weight: bold;
+        padding: 4px 8px;
+        font-size: 13px;
+        border-radius: 4px;
+        display: none;
+        }
+        #hovertip[data-show] {
+            display: block;
+        }
+        #example1 {
+            overflow: scroll;
+            padding: 10em;
+        }
+        #exampleRow {
+            padding-top: 3em;
+        }
+      </style>
 </head>
 <body>
-    <header>
+    
+    <div id="tooltip" role="tooltip">I'm a tooltip</div>
+    <div id="hovertip" role="tooltip">I'm a hovertip</div>
+
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <div class="text-center">
         <h1>CSD223 Popper Tutorial</h1>
-    </header>
+        <p>Popper is a JS Library created to make using tooltips easier</p>
+    </div>
+    <div class="container" id="exampleRow">
+        <div class="row">
+            <div class="col" id="example1">
+                <button id="button1" aria-describedby="tooltip">I'm a button</button>
+                <script>
+                    const button1 = document.querySelector('#button1');
+                    const tooltip = document.querySelector('#tooltip');
+                
+                    // Pass the button, the tooltip, and some options, and Popper will do the
+                    // magic positioning for you:
+                    Popper.createPopper(button1, tooltip, {
+                    placement: 'right',
+                    });
+                </script>
+            </div>
+            <div class="col align-self-center">
+                <p>You can use Popper to keep your tooltips attached to the item. In this example, you can use the scroll bars to see Popper in action.</p>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="exampleRow">
+        <div class="row">
+            <div class="col">
+                <button id="button2" aria-describedby="hovertip">I'm a button</button>
+                <script>
+                    const button2 = document.querySelector('#button2');
+                    const hovertip = document.querySelector('#hovertip');
 
+                    function show() {
+                        hovertip.setAttribute('data-show', '');
+                        popperInstance.update();
+                    }
 
+                    function hide() {
+                        hovertip.removeAttribute('data-show');
+                    }
 
+                    const showEvents = ['mouseenter', 'focus'];
+                    const hideEvents = ['mouseleave', 'blur'];
+
+                    showEvents.forEach((event) => {
+                        button2.addEventListener(event, show);
+                    });
+
+                    hideEvents.forEach((event) => {
+                        button2.addEventListener(event, hide);
+                    });
+
+                    Popper.createPopper(button2, hovertip, {
+                        placement: 'right',
+                    });
+                </script>
+            </div>
+            <div class="col align-self-center">
+                <p>In this example, you can see how Popper works on tooltips that are only shown on hover.</p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 </body>
 </html>
