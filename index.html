@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/atom-one-dark.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <title>CSD223 Popper Tutorial</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Eric Dawson">
+    <meta name="description" content="A basic website designed by a student for a project">
+    <style>
+        #button2, #button3 {
+            margin: 50px;
+        }
+        #hovertip {
+        background: green;
+        color: white;
+        font-weight: bold;
+        padding: 4px 8px;
+        font-size: 13px;
+        border-radius: 4px;
+        display: none;
+        }
+        #hovertip[data-show] {
+            display: block;
+        }
+        #clicktip {
+        background: purple;
+        color: white;
+        font-weight: bold;
+        padding: 4px 8px;
+        font-size: 13px;
+        border-radius: 4px;
+        display: none;
+        }
+        #clicktip[data-show] {
+            display: block;
+        }
+        #exampleText {
+            max-width: 500px;
+        }
+        #exampleRow {
+            padding-top: 3em;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="hovertip" role="tooltip">I'm a hovertip</div>
+    <div id="clicktip" role="clicktip">I'm a clicktip</div>
+
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <div class="text-center">
+        <h1>CSD223 Popper Tutorial</h1>
+        <h4>Popper is a JS Library created to make using tooltips easier</h4>
+    </div>
+    <div class="container" id="exampleRow">
+        <div class="row justify-content-center">
+            <div class="col-md-auto" id="iframe1">
+                <iframe src="example1.html" width="300" height="200"></iframe>
+            </div>
+            <div class="col align-self-center" id="exampleText">
+                <p class="text-center">Popper will keep your tooltips attached to the item.</p>
+                <p class="text-center">On the left you can see how Popper moves the tooltip when it's about to move off the page.</p>
+                <p class="text-center">On the right, you can see how Popper prevents the tooltip from running off the screen.</p>
+                <p class="text-center">Below is the code that makes Popper work.</p>
+            </div>
+            <div class="col-md-auto">
+                <iframe src="example2.html" width="300" height="200"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-auto">
+                <pre>
+                    <code>
+&lt;!-- First you have to create the tooltip and the item it will be applied to --&gt;
+&lt;div id="tooltip" role="tooltip"&gt;I'm a tooltip&lt;/div&gt;
+&lt;button id="button" aria-describedby="tooltip">I'm a button&lt;/button&gt;
+
+&lt;script&gt;
+    // Assign the elements to a variable to access them easier
+    const button = document.querySelector('#button');
+    const tooltip = document.querySelector('#tooltip');
+
+    // Pass the button, the tooltip, and some options, 
+    // and Popper will do the rest
+    Popper.createPopper(button1, tooltip, {
+    placement: 'left',
+    // **The placement value changes if Popper moves the tooltip to another side**
+    });
+&lt;/script&gt;
+                    </code>
+                </pre>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <hr>
+    </div>
+    <div class="container" id="exampleRow">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-auto">
+                <button id="button2" aria-describedby="hovertip">I'm a button</button>
+                <script>
+                    const button2 = document.querySelector('#button2');
+                    const hovertip = document.querySelector('#hovertip');
+
+                    function show() {
+                        hovertip.setAttribute('data-show', '');
+                        popperInstance.update();
+                    }
+
+                    function hide() {
+                        hovertip.removeAttribute('data-show');
+                    }
+
+                    const showEvents = ['mouseenter', 'focus'];
+                    const hideEvents = ['mouseleave', 'blur'];
+
+                    showEvents.forEach((event) => {
+                        button2.addEventListener(event, show);
+                    });
+
+                    hideEvents.forEach((event) => {
+                        button2.addEventListener(event, hide);
+                    });
+
+                    Popper.createPopper(button2, hovertip, {
+                        placement: 'top-start',
+                    });
+                </script>
+            </div>
+            <div class="col align-self-center" id="exampleText">
+                <p class="text-center">Maybe you don't always want the tooltip to be visible.</p>
+                <p class="text-center">On the left you can see a tooltip that is only shown on hover.</p>
+                <p class="text-center">On the right you can see a tooltip upon clicking the button.</p>
+            </div>
+            <div class="col-md-auto">
+                <button id="button3" aria-describedby="clicktip">I'm a button</button>
+                <script>
+                    const button3 = document.querySelector('#button3');
+                    const clicktip = document.querySelector('#clicktip');
+
+                    function toggleTooltip() {
+                        if (clicktip.hasAttribute('data-show')) {
+                            clicktip.removeAttribute('data-show');
+                        } else {
+                            clicktip.setAttribute('data-show', '');
+                            popperInstance.update();
+                        }
+                    }
+
+                    button3.addEventListener("click", toggleTooltip);
+
+                    Popper.createPopper(button3, clicktip, {
+                        placement: 'bottom-start',
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-auto">
+                <pre>
+                    <code>
+&lt;--Like before, you still need to make the tooltip and item--&gt;
+&lt;div id="hovertip" role="tooltip"&gt;I'm a hovertip&lt;/div&gt;
+&lt;button id="button2" aria-describedby="hovertip"&gt;I'm a button&lt;/button&gt;
+&lt;script&gt;
+    // Assign to a variable for easier access
+    const button2 = document.querySelector('#button2');
+    const hovertip = document.querySelector('#hovertip');
+
+    // Create functions to add/remove the [data-show]
+    // attribute to the tooltip
+    function show() {
+        hovertip.setAttribute('data-show', '');
+        popperInstance.update();
+    }
+
+    function hide() {
+        hovertip.removeAttribute('data-show');
+    }
+
+    // Assign the events to a variable so it has
+    // multiple triggers (if necessary)
+    const showEvents = ['mouseenter', 'focus'];
+    const hideEvents = ['mouseleave', 'blur'];
+
+    // Then you create the event listeners that trigger
+    // the show/hide functions
+    showEvents.forEach((event) => {
+        button2.addEventListener(event, show);
+    });
+
+    hideEvents.forEach((event) => {
+        button2.addEventListener(event, hide);
+    });
+
+    Popper.createPopper(button2, hovertip, {
+        placement: 'top-start',
+    });
+&lt;/script&gt;
+                    </code>
+                </pre>
+            </div>
+            <div class="col-md-auto">
+                <pre>
+                    <code>
+// Create your tooltip and item
+&lt;div id="clicktip" role="clicktip"&gt;I'm a clicktip&lt;/div&gt;
+&lt;button id="button3" aria-describedby="clicktip"&gt;I'm a button&lt;/button&gt;
+&lt;script&gt;
+
+    // Add them to a variable
+    const button3 = document.querySelector('#button3');
+    const clicktip = document.querySelector('#clicktip');
+    
+    // This time we have 1 function that shows or hides the tooltip
+    function toggleTooltip() {
+        if (clicktip.hasAttribute('data-show')) {
+            clicktip.removeAttribute('data-show');
+        } else {
+            clicktip.setAttribute('data-show', '');
+            popperInstance.update();
+        }
+    }
+
+    // And the event listener
+    button3.addEventListener("click", toggleTooltip);
+
+    Popper.createPopper(button3, clicktip, {
+        placement: 'bottom-start',
+    });
+&lt;/script&gt;
+                    </code>
+                </pre>
+            </div>
+        </div>
+
+    </div>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-auto">
+                <pre>
+                    <code>
+&lt;--This CSS will hide the tooltip by default and only show
+when the [data-show] attribute it added--&gt;
+#hovertip {
+    <-your css->
+    display: none;
+}
+#hovertip[data-show] {
+    display: block;
+}
+                    </code>
+                </pre>
+            </div>
+            <div class="col-md-auto">
+                <pre>
+                    <code>
+&lt;--This CSS will hide the tooltip by default and only show
+when the [data-show] attribute it added--&gt;
+#clicktip {
+    <-your css->
+    display: none;
+}
+#clicktip[data-show] {
+    display: block;
+}
+                    </code>
+                </pre>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
